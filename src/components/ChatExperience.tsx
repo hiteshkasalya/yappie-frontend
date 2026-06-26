@@ -14,6 +14,7 @@ import { getSocket } from "@/lib/socketClient";
 import { useAnonymousSession } from "@/hooks/useAnonymousSession";
 import type { ChatMessage, MatchMode, PublicUser } from "@/types";
 import { trackEvent } from "@/lib/analytics";
+import { COLLEGES } from "./CollegeSelectorModal";
 
 type MatchState = "idle" | "waiting" | "matched";
 
@@ -611,11 +612,21 @@ export function ChatExperience({ mode, friendId }: { mode?: MatchMode; friendId?
             <span className="sc-header-peer">
               {peer ? `@${peer.anonymousUsername.toLowerCase()}` : friendId ? "@loading..." : "@searching..."}
             </span>
-            {peer && (
-              <span className={peer.online ? "sc-header-online" : "sc-header-offline"} style={{ fontSize: "0.7rem", color: peer.online ? "#4ade80" : "rgba(255,255,255,0.45)" }}>
-                ● {peer.online ? "online" : "offline"}
-              </span>
-            )}
+            <div style={{ display: "flex", alignItems: "center", gap: "6px", marginTop: "2px" }}>
+              {peer && (
+                <span className={peer.online ? "sc-header-online" : "sc-header-offline"} style={{ fontSize: "0.7rem", color: peer.online ? "#4ade80" : "rgba(255,255,255,0.45)", display: "inline-flex", alignItems: "center" }}>
+                  ● {peer.online ? "online" : "offline"}
+                </span>
+              )}
+              {peer && peer.college && (
+                <>
+                  <span style={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.25)" }}>•</span>
+                  <span className="sc-header-college" style={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.45)", fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "160px" }}>
+                    {COLLEGES.find(c => c.id === peer.college)?.name || peer.college}
+                  </span>
+                </>
+              )}
+            </div>
           </div>
         </div>
 
