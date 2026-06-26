@@ -100,7 +100,7 @@ export function DashboardHome() {
   return (
     <DashboardShell>
       <header className="yappie-header">
-        <div className="yappie-header-inner">
+        <div className="yappie-header-inner flex items-center justify-between">
           <div className="yappie-brand">
             <div className="yappie-brand-mark">
               <MessageCircle className="h-[18px] w-[18px] text-[#0C0C0E]" />
@@ -109,6 +109,12 @@ export function DashboardHome() {
               yappie
             </span>
           </div>
+          <Link 
+            href="/about" 
+            className="font-sans text-xs font-extrabold text-zinc-500 hover:text-white transition-colors duration-200 lowercase tracking-tight"
+          >
+            about
+          </Link>
         </div>
 
         <div className="yappie-header-inner mt-5">
