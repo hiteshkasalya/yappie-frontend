@@ -51,8 +51,10 @@ export function OnboardingForm() {
         saveStoredSession(session);
       }
 
-      trackEvent("sign_up", { method: "Google" });
-      trackEvent("profile_completed", { age: ageNum, college });
+      if (typeof window !== "undefined" && !localStorage.getItem("yappie_signup_tracked")) {
+        trackEvent("sign_up", { method: "Google", college });
+        localStorage.setItem("yappie_signup_tracked", "true");
+      }
 
       window.location.href = "/";
     } catch (err) {
