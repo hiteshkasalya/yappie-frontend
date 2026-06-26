@@ -11,15 +11,15 @@ export interface CollegeItem {
 }
 
 export const COLLEGES: CollegeItem[] = [
-  { id: "AIT Pune", name: "Army Institute of Technology", short: "AIT · Pune", aliases: ["AIT", "Army"] },
-  { id: "COEP", name: "COEP Technological University", short: "COEP · Pune", aliases: ["COEP"] },
-  { id: "Cummins", name: "Cummins College of Engineering", short: "CCOEW · Pune", aliases: ["Cummins", "CCOEW"] },
-  { id: "DY Patil", name: "D. Y. Patil College of Engineering", short: "DYP · Pune", aliases: ["DY Patil", "DYP", "D.Y. Patil"] },
-  { id: "MITAOE", name: "MIT Academy of Engineering", short: "MITAOE · Pune", aliases: ["MITAOE"] },
-  { id: "MIT WPU", name: "MIT World Peace University", short: "MIT-WPU · Pune", aliases: ["MIT", "MIT WPU", "MIT-WPU", "WPU"] },
-  { id: "PICT", name: "Pune Institute of Computer Technology", short: "PICT · Pune", aliases: ["PICT", "Pune Institute"] },
-  { id: "Symbiosis", name: "Symbiosis International University", short: "SIU · Pune", aliases: ["Symbiosis", "SIU", "Symbi"] },
-  { id: "VIT Pune", name: "Vishwakarma Institute of Technology", short: "VIT · Pune", aliases: ["VIT", "Vishwakarma"] },
+  { id: "AIT Pune", name: "Army Institute of Technology, Pune", short: "AIT", aliases: ["AIT", "Army"] },
+  { id: "COEP", name: "COEP Technological University, Pune", short: "COEP", aliases: ["COEP"] },
+  { id: "Cummins", name: "Cummins College of Engineering, Pune", short: "CCOEW", aliases: ["Cummins", "CCOEW"] },
+  { id: "DY Patil", name: "D. Y. Patil College of Engineering, Pune", short: "DYP", aliases: ["DY Patil", "DYP", "D.Y. Patil"] },
+  { id: "MITAOE", name: "MIT Academy of Engineering, Pune", short: "MITAOE", aliases: ["MITAOE"] },
+  { id: "MIT WPU", name: "MIT World Peace University, Pune", short: "MIT-WPU", aliases: ["MIT", "MIT WPU", "MIT-WPU", "WPU"] },
+  { id: "PICT", name: "Pune Institute of Computer Technology, Pune", short: "PICT", aliases: ["PICT", "Pune Institute"] },
+  { id: "Symbiosis", name: "Symbiosis International University, Pune", short: "SIU", aliases: ["Symbiosis", "SIU", "Symbi"] },
+  { id: "VIT Pune", name: "Vishwakarma Institute of Technology, Pune", short: "VIT", aliases: ["VIT", "Vishwakarma"] },
   { id: "Other", name: "Other / Not Listed", short: "Global stream", aliases: ["Other", "Global"] },
 ];
 

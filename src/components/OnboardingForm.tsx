@@ -2,10 +2,10 @@
 
 import { FormEvent, useState } from "react";
 import { authFetch, getStoredSession, saveStoredSession, clearStoredSession } from "@/lib/clientSession";
-import { ArrowRight, MessageCircle } from "lucide-react";
 import { DashboardShell } from "./DashboardShell";
 import { trackEvent } from "@/lib/analytics";
 import { CollegeSelectorModal, COLLEGES } from "./CollegeSelectorModal";
+import { ChevronDown } from "lucide-react";
 
 export function OnboardingForm() {
   const [age, setAge] = useState("");
@@ -21,7 +21,7 @@ export function OnboardingForm() {
 
     const ageNum = parseInt(age, 10);
     if (isNaN(ageNum) || ageNum < 17 || ageNum > 80) {
-      setError("Please enter a valid age between 17 and 80.");
+      setError("Enter a valid age between 17 and 80.");
       setLoading(false);
       return;
     }
@@ -66,108 +66,64 @@ export function OnboardingForm() {
 
   return (
     <DashboardShell>
-      {/* ── BACKGROUND ── */}
-      <div className="ob-root">
-        <div className="ob-bg" />
-        <div className="ob-orb ob-orb-1" />
-        <div className="ob-orb ob-orb-2" />
-
-        {/* ── HEADER ── */}
-        <header className="ob-header">
-          <div className="ob-logo">
-            <div className="ob-logo-icon">
-              <MessageCircle className="h-4 w-4 text-white" />
-            </div>
-            <span className="ob-logo-text">Yappie</span>
+      <div className="ob2-root">
+        <div className="ob2-center">
+          {/* Logo */}
+          <div className="ob2-logo">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span>yappie</span>
           </div>
-        </header>
 
-        {/* ── FORM PANEL ── */}
-        <div className="ob-center">
-          <div className="ob-card">
-            {/* Card glow rim */}
-            <div className="ob-card-rim" />
-
-            {/* Step indicator */}
-            <div className="ob-steps">
-              <div className="ob-step ob-step--done">1</div>
-              <div className="ob-step-line" />
-              <div className="ob-step ob-step--active">2</div>
-              <div className="ob-step-line ob-step-line--dim" />
-              <div className="ob-step ob-step--idle">3</div>
+          {/* Card */}
+          <div className="ob2-card">
+            <div className="ob2-heading">
+              <h1 className="ob2-title">One quick step</h1>
+              <p className="ob2-sub">So we can put you in the right campus stream.</p>
             </div>
 
-            <div className="ob-card-body">
-              <p className="ob-eyebrow">Almost there</p>
-              <h2 className="ob-title">Set up your profile</h2>
-              <p className="ob-desc">
-                Tell us your age and campus so we can connect you with the right stream.
-              </p>
+            <form onSubmit={handleOnboardSubmit} className="ob2-form">
+              <div className="ob2-field">
+                <label className="ob2-label" htmlFor="ob-age">Age</label>
+                <input
+                  id="ob-age"
+                  required
+                  type="number"
+                  min={17}
+                  max={80}
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                  className="ob2-input"
+                  placeholder="20"
+                  autoComplete="off"
+                />
+              </div>
 
-              <form onSubmit={handleOnboardSubmit} className="ob-form">
-                {/* Age field */}
-                <div className="ob-field">
-                  <label className="ob-label" htmlFor="onboard-age">Your age</label>
-                  <div className="ob-input-wrap">
-                    <input
-                      id="onboard-age"
-                      required
-                      type="number"
-                      min={17}
-                      max={80}
-                      value={age}
-                      onChange={(e) => setAge(e.target.value)}
-                      className="ob-input"
-                      placeholder="e.g. 20"
-                    />
-                  </div>
-                </div>
-
-                {/* College field */}
-                <div className="ob-field">
-                  <label className="ob-label">College / University</label>
-                  <button
-                    type="button"
-                    onClick={() => setDropdownOpen(true)}
-                    className="ob-select"
-                  >
-                    <span className="ob-select-value">
-                      {selectedCollege?.name ?? "Select your college"}
-                    </span>
-                    <svg className="h-4 w-4 shrink-0 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-
-                  <CollegeSelectorModal
-                    isOpen={dropdownOpen}
-                    onClose={() => setDropdownOpen(false)}
-                    selectedValue={college}
-                    onChange={(val) => setCollege(val)}
-                  />
-                </div>
-
-                {error && <div className="ob-error">{error}</div>}
-
-                <button disabled={loading} type="submit" className="ob-submit">
-                  {loading ? (
-                    <>
-                      <span className="ob-spinner" />
-                      <span>Connecting…</span>
-                    </>
-                  ) : (
-                    <>
-                      <span>Enter campus stream</span>
-                      <ArrowRight className="h-4 w-4" />
-                    </>
-                  )}
+              <div className="ob2-field">
+                <label className="ob2-label">College</label>
+                <button
+                  type="button"
+                  onClick={() => setDropdownOpen(true)}
+                  className="ob2-select"
+                >
+                  <span>{selectedCollege?.name ?? "Select college"}</span>
+                  <ChevronDown className="ob2-chevron" />
                 </button>
-              </form>
+                <CollegeSelectorModal
+                  isOpen={dropdownOpen}
+                  onClose={() => setDropdownOpen(false)}
+                  selectedValue={college}
+                  onChange={(val) => setCollege(val)}
+                />
+              </div>
 
-              <p className="ob-footer-note">
-                Your identity stays strictly anonymous. We never store your real name.
-              </p>
-            </div>
+              {error && <p className="ob2-error">{error}</p>}
+
+              <button disabled={loading} type="submit" className="ob2-btn">
+                {loading ? <span className="ob2-spin" /> : "Continue"}
+              </button>
+            </form>
+
+            <p className="ob2-hint">Your real identity is never stored or shared.</p>
           </div>
         </div>
       </div>
