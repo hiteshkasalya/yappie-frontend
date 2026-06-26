@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { authFetch, getStoredSession, saveStoredSession, clearStoredSession } from "@/lib/clientSession";
-import { ArrowRight, ChevronDown, Calendar, GraduationCap, ShieldCheck, MessageCircle } from "lucide-react";
+import { ArrowRight, MessageCircle } from "lucide-react";
 import { DashboardShell } from "./DashboardShell";
 import { trackEvent } from "@/lib/analytics";
 import { CollegeSelectorModal, COLLEGES } from "./CollegeSelectorModal";
@@ -13,6 +13,7 @@ export function OnboardingForm() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
   async function handleOnboardSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
@@ -65,96 +66,108 @@ export function OnboardingForm() {
 
   return (
     <DashboardShell>
-      <header className="yappie-header">
-        <div className="yappie-header-inner">
-          <div className="yappie-brand">
-            <div className="yappie-brand-mark">
-              <MessageCircle className="h-[18px] w-[18px] text-[#0C0C0E]" />
+      {/* ── BACKGROUND ── */}
+      <div className="ob-root">
+        <div className="ob-bg" />
+        <div className="ob-orb ob-orb-1" />
+        <div className="ob-orb ob-orb-2" />
+
+        {/* ── HEADER ── */}
+        <header className="ob-header">
+          <div className="ob-logo">
+            <div className="ob-logo-icon">
+              <MessageCircle className="h-4 w-4 text-white" />
             </div>
-            <span className="yappie-brand-name">
-              yappie
-            </span>
+            <span className="ob-logo-text">Yappie</span>
           </div>
-        </div>
-      </header>
+        </header>
 
-      <div className="yappie-onboard">
-        <div className="yappie-onboard-panel">
-          <div className="yappie-onboard-header">
-            <p className="yappie-auth-eyebrow">One last step</p>
-            <h2 className="yappie-auth-title">Profile details</h2>
-            <p className="yappie-auth-desc">
-              Set your age and campus so we can match you with the right stream.
-            </p>
-          </div>
+        {/* ── FORM PANEL ── */}
+        <div className="ob-center">
+          <div className="ob-card">
+            {/* Card glow rim */}
+            <div className="ob-card-rim" />
 
-          <form onSubmit={handleOnboardSubmit} className="yappie-auth-form">
-            <div className="yappie-field">
-              <label className="yappie-field-label" htmlFor="onboard-age">
-                Your age
-              </label>
-              <div className="yappie-input-wrap">
-                <Calendar className="yappie-input-icon h-4 w-4" />
-                <input
-                  id="onboard-age"
-                  required
-                  type="number"
-                  min={17}
-                  max={80}
-                  value={age}
-                  onChange={(e) => setAge(e.target.value)}
-                  className="yappie-input"
-                  placeholder="Enter your age"
-                />
-              </div>
+            {/* Step indicator */}
+            <div className="ob-steps">
+              <div className="ob-step ob-step--done">1</div>
+              <div className="ob-step-line" />
+              <div className="ob-step ob-step--active">2</div>
+              <div className="ob-step-line ob-step-line--dim" />
+              <div className="ob-step ob-step--idle">3</div>
             </div>
 
-            <div className="yappie-field">
-              <label className="yappie-field-label">College / university</label>
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={() => setDropdownOpen(true)}
-                  className="yappie-select-trigger"
-                >
-                  <div className="yappie-select-trigger-inner">
-                    <GraduationCap className="h-4 w-4 shrink-0 text-[var(--text-3)]" />
-                    <span className="font-sans font-extrabold text-[13px] text-white tracking-normal leading-normal">
-                      {selectedCollege?.name}
-                    </span>
+            <div className="ob-card-body">
+              <p className="ob-eyebrow">Almost there</p>
+              <h2 className="ob-title">Set up your profile</h2>
+              <p className="ob-desc">
+                Tell us your age and campus so we can connect you with the right stream.
+              </p>
+
+              <form onSubmit={handleOnboardSubmit} className="ob-form">
+                {/* Age field */}
+                <div className="ob-field">
+                  <label className="ob-label" htmlFor="onboard-age">Your age</label>
+                  <div className="ob-input-wrap">
+                    <input
+                      id="onboard-age"
+                      required
+                      type="number"
+                      min={17}
+                      max={80}
+                      value={age}
+                      onChange={(e) => setAge(e.target.value)}
+                      className="ob-input"
+                      placeholder="e.g. 20"
+                    />
                   </div>
-                  <ChevronDown className="h-4.5 w-4.5 shrink-0 text-[var(--text-3)]" />
+                </div>
+
+                {/* College field */}
+                <div className="ob-field">
+                  <label className="ob-label">College / University</label>
+                  <button
+                    type="button"
+                    onClick={() => setDropdownOpen(true)}
+                    className="ob-select"
+                  >
+                    <span className="ob-select-value">
+                      {selectedCollege?.name ?? "Select your college"}
+                    </span>
+                    <svg className="h-4 w-4 shrink-0 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+
+                  <CollegeSelectorModal
+                    isOpen={dropdownOpen}
+                    onClose={() => setDropdownOpen(false)}
+                    selectedValue={college}
+                    onChange={(val) => setCollege(val)}
+                  />
+                </div>
+
+                {error && <div className="ob-error">{error}</div>}
+
+                <button disabled={loading} type="submit" className="ob-submit">
+                  {loading ? (
+                    <>
+                      <span className="ob-spinner" />
+                      <span>Connecting…</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Enter campus stream</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </>
+                  )}
                 </button>
+              </form>
 
-                <CollegeSelectorModal
-                  isOpen={dropdownOpen}
-                  onClose={() => setDropdownOpen(false)}
-                  selectedValue={college}
-                  onChange={(val) => setCollege(val)}
-                />
-              </div>
+              <p className="ob-footer-note">
+                Your identity stays strictly anonymous. We never store your real name.
+              </p>
             </div>
-
-            {error && <div className="yappie-auth-error">{error}</div>}
-
-            <button disabled={loading} type="submit" className="yappie-auth-submit">
-              {loading ? (
-                <>
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-[var(--bg)]/20 border-t-[var(--bg)]" />
-                  Connecting...
-                </>
-              ) : (
-                <>
-                  Enter campus stream
-                  <ArrowRight className="h-4 w-4" />
-                </>
-              )}
-            </button>
-          </form>
-
-          <div className="yappie-auth-footer">
-            <ShieldCheck className="h-3.5 w-3.5" />
-            Identity strictly anonymized
           </div>
         </div>
       </div>
